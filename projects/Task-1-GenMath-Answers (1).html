@@ -1,0 +1,577 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Performance Task #1 – Civil Engineer</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Inter:wght@300;400;500;600&family=Crimson+Pro:ital,wght@0,300;0,400;0,600;1,400&display=swap" rel="stylesheet"/>
+
+  <style>
+    :root {
+      --bg:          #07111F;
+      --surface:     #0D1B2F;
+      --card:        #112039;
+      --border:      #1E3558;
+      --accent:      #3A8DFF;
+      --gold:        #F0A500;
+      --gold-dim:    #C07D00;
+      --text:        #DDE8F5;
+      --muted:       #7A9CC0;
+      --faint:       #1A2E4A;
+      --white:       #FFFFFF;
+      --grid-color:  rgba(58, 141, 255, 0.04);
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Inter', sans-serif;
+      font-size: 15px;
+      line-height: 1.75;
+      min-height: 100vh;
+      position: relative;
+      overflow-x: hidden;
+    }
+
+    /* Blueprint grid background */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image:
+        linear-gradient(var(--grid-color) 1px, transparent 1px),
+        linear-gradient(90deg, var(--grid-color) 1px, transparent 1px);
+      background-size: 40px 40px;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* Glowing corner accents */
+    body::after {
+      content: '';
+      position: fixed;
+      top: -200px; right: -200px;
+      width: 500px; height: 500px;
+      background: radial-gradient(circle, rgba(58,141,255,0.08) 0%, transparent 70%);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .page-wrapper {
+      position: relative;
+      z-index: 1;
+      max-width: 860px;
+      margin: 0 auto;
+      padding: 48px 24px 80px;
+    }
+
+    /* ── HEADER ─────────────────────────────── */
+    .header {
+      border: 1px solid var(--border);
+      border-top: 3px solid var(--accent);
+      background: var(--surface);
+      padding: 32px 36px 28px;
+      margin-bottom: 40px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .header::before {
+      content: '//  CIVIL ENGINEERING';
+      position: absolute;
+      top: 14px; right: 20px;
+      font-family: 'Inter', monospace;
+      font-size: 10px;
+      letter-spacing: 3px;
+      color: var(--accent);
+      opacity: 0.6;
+    }
+
+    .school-badge {
+      display: inline-block;
+      font-family: 'Inter', sans-serif;
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: var(--gold);
+      border: 1px solid var(--gold-dim);
+      padding: 4px 12px;
+      margin-bottom: 16px;
+    }
+
+    .header h1 {
+      font-family: 'Cinzel', serif;
+      font-size: clamp(20px, 4vw, 28px);
+      font-weight: 700;
+      color: var(--white);
+      letter-spacing: 1px;
+      line-height: 1.25;
+    }
+
+    .header h2 {
+      font-family: 'Cinzel', serif;
+      font-size: clamp(13px, 2.5vw, 16px);
+      font-weight: 400;
+      color: var(--accent);
+      letter-spacing: 2px;
+      margin-top: 6px;
+    }
+
+    .meta-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+      gap: 12px;
+      margin-top: 24px;
+      border-top: 1px solid var(--border);
+      padding-top: 20px;
+    }
+
+    .meta-item label {
+      display: block;
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 2px;
+      color: var(--muted);
+      text-transform: uppercase;
+      margin-bottom: 3px;
+    }
+
+    .meta-item span {
+      font-family: 'Crimson Pro', serif;
+      font-size: 15px;
+      color: var(--text);
+    }
+
+    /* ── SECTION CARD ───────────────────────── */
+    .section-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-left: 3px solid var(--accent);
+      margin-bottom: 28px;
+      overflow: hidden;
+    }
+
+    .section-header {
+      background: var(--faint);
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      padding: 14px 24px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .section-num {
+      font-family: 'Cinzel', serif;
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--accent);
+      letter-spacing: 2px;
+      min-width: 32px;
+    }
+
+    .section-title {
+      font-family: 'Cinzel', serif;
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--white);
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+    }
+
+    .section-body {
+      padding: 24px 28px;
+    }
+
+    /* ── FIELD ──────────────────────────────── */
+    .field {
+      margin-bottom: 22px;
+    }
+
+    .field:last-child { margin-bottom: 0; }
+
+    .field-label {
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 8px;
+    }
+
+    .field-answer {
+      font-family: 'Crimson Pro', serif;
+      font-size: 16px;
+      color: var(--text);
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-left: 2px solid var(--accent);
+      padding: 14px 18px;
+      line-height: 1.8;
+    }
+
+    /* ── BENEFITS TABLE ─────────────────────── */
+    .benefits-table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    .benefits-table th {
+      background: var(--faint);
+      font-family: 'Inter', sans-serif;
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--accent);
+      text-align: left;
+      padding: 12px 16px;
+      border: 1px solid var(--border);
+    }
+
+    .benefits-table td {
+      border: 1px solid var(--border);
+      padding: 14px 16px;
+      vertical-align: top;
+    }
+
+    .benefits-table td:first-child {
+      font-family: 'Inter', sans-serif;
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--gold);
+      white-space: nowrap;
+      min-width: 200px;
+      background: rgba(240,165,0,0.04);
+    }
+
+    .benefits-table td:last-child {
+      font-family: 'Crimson Pro', serif;
+      font-size: 15.5px;
+      color: var(--text);
+      line-height: 1.75;
+    }
+
+    .benefits-table tr:hover td {
+      background: rgba(58,141,255,0.03);
+    }
+
+    /* ── REFLECTION CARDS ───────────────────── */
+    .reflection-item {
+      border: 1px solid var(--border);
+      margin-bottom: 16px;
+      overflow: hidden;
+    }
+
+    .reflection-item:last-child { margin-bottom: 0; }
+
+    .reflection-q {
+      background: var(--faint);
+      padding: 10px 18px;
+      font-family: 'Inter', sans-serif;
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 1.5px;
+      color: var(--accent);
+      text-transform: uppercase;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .reflection-a {
+      padding: 16px 18px;
+      font-family: 'Crimson Pro', serif;
+      font-size: 16px;
+      color: var(--text);
+      line-height: 1.8;
+    }
+
+    /* ── FOOTER ─────────────────────────────── */
+    .footer {
+      margin-top: 48px;
+      border-top: 1px solid var(--border);
+      padding-top: 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+
+    .footer-left {
+      font-size: 11px;
+      color: var(--muted);
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+    }
+
+    .footer-deadline {
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 2px;
+      color: var(--gold);
+      text-transform: uppercase;
+      border: 1px solid var(--gold-dim);
+      padding: 5px 14px;
+    }
+
+    /* ── OBJECTIVE BANNER ───────────────────── */
+    .objective-banner {
+      background: linear-gradient(135deg, var(--faint), var(--card));
+      border: 1px solid var(--border);
+      border-left: 3px solid var(--gold);
+      padding: 18px 24px;
+      margin-bottom: 36px;
+    }
+
+    .objective-banner .obj-label {
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 3px;
+      color: var(--gold);
+      text-transform: uppercase;
+      margin-bottom: 8px;
+    }
+
+    .objective-banner p {
+      font-family: 'Crimson Pro', serif;
+      font-size: 16px;
+      color: var(--muted);
+      font-style: italic;
+      line-height: 1.7;
+    }
+
+    /* highlight chip */
+    .chip {
+      display: inline-block;
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--accent);
+      background: rgba(58,141,255,0.1);
+      border: 1px solid rgba(58,141,255,0.3);
+      padding: 2px 10px;
+      border-radius: 0;
+      vertical-align: middle;
+    }
+
+    @media (max-width: 600px) {
+      .section-body { padding: 18px 16px; }
+      .benefits-table td:first-child { min-width: 130px; white-space: normal; }
+      .meta-grid { grid-template-columns: 1fr 1fr; }
+    }
+
+    @media print {
+      body { background: white; color: #111; }
+      .page-wrapper { max-width: 100%; padding: 24px; }
+    }
+  </style>
+</head>
+<body>
+<div class="page-wrapper">
+
+  <!-- ── HEADER ── -->
+  <div class="header">
+    <div class="school-badge">Marcos National High School &nbsp;·&nbsp; General Mathematics</div>
+    <h1>Performance Task #1</h1>
+    <h2>Career Salary &amp; Benefits Research Activity</h2>
+    <div class="meta-grid">
+      <div class="meta-item">
+        <label>Subject</label>
+        <span>General Mathematics</span>
+      </div>
+      <div class="meta-item">
+        <label>Career Track</label>
+        <span>Engineering</span>
+      </div>
+      <div class="meta-item">
+        <label>Deadline</label>
+        <span>July 3, 2026</span>
+      </div>
+      <div class="meta-item">
+        <label>Output Type</label>
+        <span>Softcopy (Digital)</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── OBJECTIVE ── -->
+  <div class="objective-banner">
+    <div class="obj-label">Objective</div>
+    <p>To explore an aspired career by researching its salary, benefits, and requirements — and to reflect on whether it aligns with personal goals and expectations.</p>
+  </div>
+
+  <!-- ── PART 1: Career Overview ── -->
+  <div class="section-card">
+    <div class="section-header">
+      <span class="section-num">01</span>
+      <span class="section-title">Career Overview</span>
+    </div>
+    <div class="section-body">
+
+      <div class="field">
+        <div class="field-label">Aspired Job / Career</div>
+        <div class="field-answer">
+          Civil Engineer &nbsp;<span class="chip">Engineering</span>
+        </div>
+      </div>
+
+      <div class="field">
+        <div class="field-label">Brief Description of the Job</div>
+        <div class="field-answer">
+          Civil engineers design, construct, and maintain infrastructure such as roads, bridges, dams, buildings, and water supply systems. They apply principles of engineering, mathematics, and physics to create safe and efficient structures that serve the public. In the Philippines, civil engineers play a vital role in addressing infrastructure gaps and supporting national development goals under programs like "Build Better More."
+        </div>
+      </div>
+
+      <div class="field">
+        <div class="field-label">Why Are You Interested in This Career?</div>
+        <div class="field-answer">
+          I am drawn to civil engineering because it combines technical knowledge with real-world problem-solving that directly impacts communities. The idea of designing bridges, roads, and structures that people will depend on for decades is deeply fulfilling. Additionally, the Philippines' growing need for infrastructure development makes this a highly relevant and impactful career with strong long-term demand.
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ── PART 2: Salary ── -->
+  <div class="section-card">
+    <div class="section-header">
+      <span class="section-num">02</span>
+      <span class="section-title">Salary Information</span>
+    </div>
+    <div class="section-body">
+
+      <div class="field">
+        <div class="field-label">Estimated Starting Salary</div>
+        <div class="field-answer">
+          ₱18,000 – ₱25,000 per month (fresh graduate / entry-level, Philippines)
+        </div>
+      </div>
+
+      <div class="field">
+        <div class="field-label">Source of Information</div>
+        <div class="field-answer">
+          JobStreet Philippines — <em>jobstreet.com.ph</em> (Civil Engineer salary reports, 2024)<br/>
+          Professional Regulation Commission (PRC) — <em>prc.gov.ph</em> (Licensure and career guidance data)<br/>
+          Philippine Institute of Civil Engineers (PICE) — <em>pice.org.ph</em> (Career development resources)
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ── PART 3: Benefits ── -->
+  <div class="section-card">
+    <div class="section-header">
+      <span class="section-num">03</span>
+      <span class="section-title">Benefits &amp; Perks</span>
+    </div>
+    <div class="section-body">
+      <table class="benefits-table">
+        <thead>
+          <tr>
+            <th>Benefit Type</th>
+            <th>Description</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Health Insurance</td>
+            <td>Company-provided HMO (Health Maintenance Organization) covering hospitalization, emergency care, outpatient consultations, and dental/vision services. Some engineering firms extend HMO coverage to immediate family members as part of the compensation package.</td>
+          </tr>
+          <tr>
+            <td>Paid Leave<br/><em>(Vacation / Sick)</em></td>
+            <td>A minimum of 5 Service Incentive Leave (SIL) days annually as mandated by the Philippine Labor Code. Most engineering firms offer 10–15 combined vacation and sick leave days, with some government agencies granting up to 30 days of leave credits per year.</td>
+          </tr>
+          <tr>
+            <td>Retirement Plans</td>
+            <td>Mandatory SSS (Social Security System) contributions are shared between employer and employee, providing retirement, disability, and death benefits. Large construction and engineering companies often supplement this with their own pension or provident fund programs.</td>
+          </tr>
+          <tr>
+            <td>Bonuses / Salary Increases</td>
+            <td>Mandatory 13th Month Pay under Philippine law (Presidential Decree No. 851). Performance bonuses tied to project milestones and completion. Annual merit increases typically range from 5–15% based on performance evaluations, with faster growth for licensed engineers (CE Board passer).</td>
+          </tr>
+          <tr>
+            <td>Other Benefits<br/><em>(Housing, Travel, etc.)</em></td>
+            <td>Transportation or fuel allowance for engineers assigned to field sites; per diem and accommodation coverage during out-of-town or provincial project assignments; provision of Personal Protective Equipment (PPE); and professional development allowances for attending seminars, training, and technical courses.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- ── PART 4: Requirements ── -->
+  <div class="section-card">
+    <div class="section-header">
+      <span class="section-num">04</span>
+      <span class="section-title">Job Requirements</span>
+    </div>
+    <div class="section-body">
+
+      <div class="field">
+        <div class="field-label">Education / Training Required</div>
+        <div class="field-answer">
+          Bachelor of Science in Civil Engineering (BSCE) — a 5-year degree program from an accredited university or college recognized by CHED (Commission on Higher Education). Upon graduation, candidates must pass the Civil Engineering Licensure Examination (CELE) administered by the Professional Regulation Commission (PRC) to become a Registered Civil Engineer (RCE).
+        </div>
+      </div>
+
+      <div class="field">
+        <div class="field-label">Skills Needed</div>
+        <div class="field-answer">
+          Structural analysis and design; proficiency in engineering software (AutoCAD, Civil 3D, SAP2000, STAAD.Pro); advanced mathematics and physics; project management and scheduling; technical report writing; critical thinking and problem-solving; communication and teamwork; and knowledge of the National Building Code of the Philippines (NBCP).
+        </div>
+      </div>
+
+      <div class="field">
+        <div class="field-label">Work Experience (if needed)</div>
+        <div class="field-answer">
+          Fresh graduates are accepted for entry-level positions such as Junior Engineer, Site Engineer, or Draftsman. The BSCE curriculum requires a minimum of 300 hours of On-the-Job Training (OJT) prior to graduation. Senior engineer and project manager roles typically require 3–5 years of relevant field experience, and specialist positions (e.g., structural, geotechnical) may require further post-graduate training or Professional Engineer (PE) licensure.
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ── PART 5: Reflection ── -->
+  <div class="section-card">
+    <div class="section-header">
+      <span class="section-num">05</span>
+      <span class="section-title">Reflection</span>
+    </div>
+    <div class="section-body">
+
+      <div class="reflection-item">
+        <div class="reflection-q">Q1 — Do you think the salary and benefits are fair for the job? Why or why not?</div>
+        <div class="reflection-a">
+          The starting salary of ₱18,000–₱25,000 per month may appear modest given the rigorous five-year academic program and demanding licensure examination that civil engineers must complete. However, it is generally fair within the context of Philippine wage standards and cost of living, particularly for fresh graduates. What makes the compensation structure genuinely worthwhile is its trajectory — as licensed civil engineers gain project experience and take on leadership roles, their earnings grow significantly. Senior civil engineers and project managers can earn ₱60,000 to over ₱100,000 per month, and those working abroad (through POEA-processed contracts) can earn multiple times more. The combination of benefits — HMO, leave credits, 13th month pay, and performance bonuses — also adds substantial value beyond the base salary.
+        </div>
+      </div>
+
+      <div class="reflection-item">
+        <div class="reflection-q">Q2 — Would you still choose this career after learning about the salary and benefits? Why?</div>
+        <div class="reflection-a">
+          Yes, without hesitation. Salary is an important factor, but it is not the sole measure of a career's value. Civil engineering offers something rare: the opportunity to contribute meaningfully and visibly to society. Every bridge, highway, or flood control system built is a lasting achievement. The career also provides strong job security — infrastructure is always needed, and licensed civil engineers are in consistent demand both locally and internationally. Knowing that this field rewards expertise and dedication with long-term growth makes it an even more compelling choice.
+        </div>
+      </div>
+
+      <div class="reflection-item">
+        <div class="reflection-q">Q3 — What surprised you the most about this career?</div>
+        <div class="reflection-a">
+          The most surprising discovery was how vast and diverse the field of civil engineering truly is. I initially assumed it was primarily about building construction, but it encompasses numerous specializations — structural engineering, geotechnical engineering, environmental engineering, transportation engineering, hydraulics and water resources, and coastal engineering, among others. Each sub-field carries its own unique challenges and career paths. It was also surprising to learn how directly civil engineers contribute to disaster resilience in the Philippines, particularly in designing flood-resistant infrastructure and earthquake-proof structures — a responsibility that carries enormous weight in a country prone to natural hazards.
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ── FOOTER ── -->
+  <div class="footer">
+    <div class="footer-left">General Mathematics · Performance Task #1 · By Juswa of THRONES INTERNATIONAL CORPORATION @2025 All rights reserved</div>
+    <div class="footer-deadline">Deadline: July 3 (According to the Answer Sheet)</div>
+  </div>
+
+</div>
+</body>
+</html>
